@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bilan</title>
+<script>
+
+let listeweather=[{"id_meto":"1","condition_meteo":"Soleil"},{"id_meto":"2","condition_meteo":"Neige"},{"id_meto":"3","condition_meteo":"Pluie"},{"id_meto":"4","condition_meteo":"Nuageux"}];
+
+let listevitesse=[{"id_vitesse":"1","condition_vitesse":"Lent"},{"id_vitesse":"2","condition_vitesse":"Normale"},{"id_vitesse":"3","condition_vitesse":"Rapide"}];
+
+let listedifficultedutrajet=[{"id_difficulte":"1","condition_difficulte":"Pas de diffculte"},{"id_difficulte":"2","condition_difficulte":"Fatigue"},{"id_difficulte":"3","condition_difficulte":"Inatention"},{"id_difficulte":"4","condition_difficulte":"Interference"}];
+
+let listetypederoute=[{"id_route":"1","Type_de_route":"Autoroute"},{"id_route":"2","Type_de_route":"Route Nationale"},{"id_route":"3","Type_de_route":"Route Départementale"},{"id_route":"4","Type_de_route":"Ville"},{"id_route":"5","Type_de_route":"Montage"},{"id_route":"6","Type_de_route":"Autre"}];
+
+let listetraffic=[{"id_traffic":"1","type_traffic":"Faible"},{"id_traffic":"2","type_traffic":"Moyen"},{"id_traffic":"3","type_traffic":"Fort"}];
+
+
+
+let listeExperiences=new Array();;
+
+let dataString=localStorage.getItem('listeExperiences');
+// console.log(dataString);
+if(dataString!=null){
+listeExperiences=JSON.parse(dataString);
+}
+
+document.onreadystatechange=function(){
+	if(document.readyState=="complete"){
+		afficheListeExperience();
+	}
+}
+
+
+function afficheStatistiques() {
+  // Calculer les statistiques à partir de la liste d'expériences
+  let nombreExperiences = listeExperiences.length;
+  let distanceTotale = 0;
+  listeExperiences.forEach(function(item) {
+    distanceTotale += parseInt(item.Distance);
+  });
+
+  // Afficher les statistiques dans un tableau HTML
+  let codeHTML = "<table><thead><tr><th>Statistiques</th><th>Valeur</th></tr></thead><tbody>";
+  codeHTML += `<tr><td>Nombre d'expériences</td><td>${nombreExperiences}</td></tr>`;
+  codeHTML += `<tr><td>Distance totale parcourue</td><td>${distanceTotale} / 3000 km</td></tr>`;
+  codeHTML += "</tbody></table>";
+
+  document.getElementById('statistiques').innerHTML = codeHTML;
+}
+
+function afficheListeExperience() {
+  let codeHTML = "<table><thead><tr><th>Date</th><th>Heure de debut</th><th>Heure de fin</th><th>Kilometrage</th><th>Météo</th><th>Vitesse</th><th>Difficulté</th><th>Type de route</th><th>Traffic</th></tr></thead><tbody>";
+  let totalDistance = 0.0;
+
+  listeExperiences.forEach(function (item) {
+    let metotrouvee = "";
+    let vitessetrouvee = "";
+    let difficultetrouvee = "";
+    let routetrouvee = "";
+    let traffictrouve = "";
+
+    // Find the corresponding label for each ID
+    listeweather.forEach(function (meto) {
+      if (meto.id_meto == item.Meteo) {
+        metotrouvee = meto.condition_meteo;
+      }
+    });
+
+    listevitesse.forEach(function (vitesse) {
+      if (vitesse.id_vitesse == item.Vitesse) {
+        vitessetrouvee = vitesse.condition_vitesse;
+      }
+    });
+
+    listedifficultedutrajet.forEach(function (difficulte) {
+      if (difficulte.id_difficulte == item.Difficulté) {
+        difficultetrouvee = difficulte.condition_difficulte;
+      }
+    });
+
+    listetypederoute.forEach(function (route) {
+      if (route.id_route == item.Route) {
+        routetrouvee = route.Type_de_route;
+      }
+    });
+
+    listetraffic.forEach(function (traffic) {
+      if (traffic.id_traffic == item.Traffic) {
+        traffictrouve = traffic.type_traffic;
+      }
+    });
+
+    totalDistance += parseInt(item.Distance);
+    codeHTML += `<tr><td>${item.Date}</td><td>${item.Debut}</td><td>${item.Fin}</td><td>${item.Distance}</td><td>${metotrouvee}</td><td>${vitessetrouvee}</td><td>${difficultetrouvee}</td><td>${routetrouvee}</td><td>${traffictrouve}</td></tr>`;
+  });
+
+  codeHTML += "</tbody></table>";
+  document.getElementById('main').insertAdjacentHTML("afterbegin", codeHTML);
+
+  afficheStatistiques();
+}
+
+</script>
+<style>
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+body {
+  background-color: ghostwhite;
+  font-family: revert-layer;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.5em;
+  font-weight: bold;
+  margin: 20px 0;
+  text-align: center;
+}
+h2 {
+  font-size: 2.5em;
+  font-weight: bold;
+  margin: 20px 0;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<nav>
+	<a href="assistantconduite.html">Saisir une experience</a>
+	<a href="javascript:localStorage.removeItem('listeExperiences');"> Effacer tout </a>
+</nav>
+<h1>Liste test</h1>
+<section id="main"></section>
+<h2>Statistiques</h2>
+<section id="statistiques"></section>
+</body>
+</html>

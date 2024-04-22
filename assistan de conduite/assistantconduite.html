@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistant d'expérience de conduite</title>
+<script>
+    let listeweather=[{"id_meto":"1","condition_meteo":"Soleil"},{"id_meto":"2","condition_meteo":"Neige"},{"id_meto":"3","condition_meteo":"Pluie"},{"id_meto":"4","condition_meteo":"Nuageux"}];
+    let listevitesse=[{"id_vitesse":"1","condition_vitesse":"Lent"},{"id_vitesse":"2","condition_vitesse":"Normale"},{"id_vitesse":"3","condition_vitesse":"Rapide"}];
+    let listedifficultedutrajet=[{"id_difficulte":"1","condition_difficulte":"Pas de diffculte"},{"id_difficulte":"2","condition_difficulte":"Fatigue"},{"id_difficulte":"3","condition_difficulte":"Inatention"},{"id_difficulte":"4","condition_difficulte":"Interference"}];
+    let listetypederoute=[{"id_route":"1","Type_de_route":"Autoroute"},{"id_route":"2","Type_de_route":"Route Nationale"},{"id_route":"3","Type_de_route":"Route Départementale"},{"id_route":"4","Type_de_route":"Ville"},{"id_route":"5","Type_de_route":"Montage"},{"id_route":"6","Type_de_route":"Autre"}];
+    let listetraffic=[{"id_traffic":"1","type_traffic":"Faible"},{"id_traffic":"2","type_traffic":"Moyen"},{"id_traffic":"3","type_traffic":"Fort"}];
+   
+
+    
+function saveform(){
+date=document.getElementById('date').value;
+start=document.getElementById('start_time').value;
+end=document.getElementById('end_time').value;
+distance=document.getElementById('distance').value;
+meto=document.getElementById('weather').value;
+vitesse=document.getElementById('vitesse').value;
+difficulte=document.getElementById('Difficultés du trajet').value;
+route=document.getElementById('Type de route').value;
+traffic=document.getElementById('traffic').value;
+console.log(`Date : ${date} , Debut : ${start} , Fin : ${end} , Distance : ${distance} , Meto : ${meto} , Vitesse : ${vitesse} , Difficulté : ${difficulte} , Route : ${route} , Traffic : ${traffic} `);   
+
+
+listexperience=new Array();
+
+
+listexperienceString=localStorage.getItem('listeExperiences');
+
+if(listexperienceString!=null) { listexperience=JSON.parse(listexperienceString);}
+
+
+newIDexperience=listexperience.length+1;
+
+
+newexperience={"idexperience": newIDexperience,"Date": date, "Debut": start, "Fin": end, "Distance": distance, "Meteo": meto, "Vitesse": vitesse, "Difficulté": difficulte, "Route": route, "Traffic": traffic};
+console.log(newexperience);
+
+listexperience.push(newexperience);
+
+listexperienceStr=JSON.stringify(listexperience);
+
+localStorage.setItem('listeExperiences',listexperienceStr);
+alert('Expérience enregistré!');
+
+
+document.getElementById('experienceForm').reset();
+
+
+}
+
+
+
+   
+</script>
+</head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #128;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        main {
+            padding: 1rem;
+        }
+
+        footer {
+            background-color: #333;htm
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        label, input, select {
+            display: block;
+            width: 100%;
+        }
+
+       button[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.5rem;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+        }
+
+        button[type="button"]:hover {
+            background-color: #45a049;
+        }
+      
+
+         nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        nav a {
+          background-color: #4CAF50;
+          color: white;
+          padding: 0.5rem;
+          border: none;
+          cursor: pointer;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+        }
+
+        nav a:hover {
+          background-color: #45a049;
+        }
+
+        h5 {
+          font-size: 1rem;
+          font-weight: bold;
+          margin: 0;
+          padding: 0;
+        }
+
+    </style>
+
+<body>
+    <header>
+        <h1>Assistant d'expérience de conduite</h1>
+    </header>
+    <main>
+
+        <form id="experienceForm">
+            
+            <label for="date">Date :</label>
+            <input type="date" id="date" name="date" >
+
+            <label for="start_time">Heure de début :</label>
+            <input type="time" id="start_time" name="start_time" >
+
+            <label for="end_time">Heure de fin :</label>
+            <input type="time" id="end_time" name="end_time" >
+
+            <label for="distance">Kilométrage parcouru :</label>
+            <input type="number" id="distance" name="distance" step="1" min="0" >
+
+            <label for="weather">Météo :</label>
+            <select id="weather" name="weather" >
+                <option value="">Sélectionnez la météo</option>
+             </select>
+             
+            <label for="Vitesse">Vitesse :</label>
+            <select id="vitesse" name="vitesse" >
+                <option value="">Sélectionnez la vitesse</option>
+            </select>
+            
+            <label for="Difficultés du trajet">Difficultés du trajet :</label>
+            <select id="Difficultés du trajet" name="Difficultés du trajet" >
+                <option value="">Sélectionnez la difficulté</option>              
+            </select>
+            
+            <label for="Type de route">Type de route :</label>
+            <select id="Type de route" name="Type de route" >
+                <option value="">Sélectionnez le type de route</option>
+            </select>
+
+            <label for="traffic">Intensité du trafic :</label>
+            <select id="traffic" name="traffic" >
+                <option value="">Sélectionnez le traffic</option>
+            </select>
+            
+            <script>
+            listeweather.forEach(function(item,index){
+            lOption=`<option value="${item.id_meto}">${item.condition_meteo}</option>`;
+            document.getElementById('weather').insertAdjacentHTML('beforeend',lOption);
+                });
+            listevitesse.forEach(function(item,index){
+            lOption=`<option value="${item.id_vitesse}">${item.condition_vitesse}</option>`;
+            document.getElementById('vitesse').insertAdjacentHTML('beforeend',lOption);
+                });
+            listedifficultedutrajet.forEach(function(item,index){
+            lOption=`<option value="${item.id_difficulte}">${item.condition_difficulte}</option>`;
+            document.getElementById('Difficultés du trajet').insertAdjacentHTML('beforeend',lOption);
+                });
+            listetypederoute.forEach(function(item,index){
+            lOption=`<option value="${item.id_route}">${item.Type_de_route}</option>`;
+            document.getElementById('Type de route').insertAdjacentHTML('beforeend',lOption);
+                });
+            listetraffic.forEach(function(item,index){
+            lOption=`<option value="${item.id_traffic}">${item.type_traffic}</option>`;
+            document.getElementById('traffic').insertAdjacentHTML('beforeend',lOption);
+                });
+            </script>
+
+
+            <button type="button" onclick="saveform()">Soumettre</button> 
+
+         <nav><a href="bilantest.html">Voir le bilan</a></nav>     
+
+
+        </form>
+    </main>
+    <footer>
+        <p>Assistant d'expérience de conduite &copy; 2023 | Auteur: KAMEL Seifeldin | Tous droits réservés.</p>
+    </footer>
+</body>
+</html>
